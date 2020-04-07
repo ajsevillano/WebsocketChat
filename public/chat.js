@@ -27,10 +27,11 @@ btn.addEventListener('click', () => {
 		message: message.value,
 		name: handle.innerHTML,
 	});
+	message.value = '';
 });
 
 // Listen for events
 socket.on('chat', (data) => {
 	output.innerHTML +=
-		'<p><strong>' + data.name + '</strong>' + data.message + '</p>';
+		'<p><strong>' + data.name + '</br></strong>' + data.message + '</p>';
 });
