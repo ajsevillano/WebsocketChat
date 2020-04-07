@@ -21,6 +21,16 @@ let message = document.getElementById('message');
 let btn = document.getElementById('send');
 let output = document.getElementById('output');
 
+// Send the message when Return key is press and message is not empty.
+document.addEventListener('keydown', (event) => {
+	if (event.which === 13 && message.value === '') {
+		event.preventDefault();
+		window.alert('No puedes enviar un mensaje vacio');
+	} else if (event.which === 13 && message.value != '') {
+		btn.click();
+	}
+});
+
 // Emit the events
 btn.addEventListener('click', () => {
 	socket.emit('chat', {
