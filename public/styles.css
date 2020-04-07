@@ -1,5 +1,7 @@
+@import url('https://fonts.googleapis.com/css2?family=Nunito&display=swap');
+
 body {
-	font-family: 'Nunito';
+	font-family: 'Nunito', sans-serif;
 }
 
 h2,
@@ -60,7 +62,7 @@ input {
 }
 
 button {
-	background: #575ed8;
+	background: #e2375c;
 	color: #fff;
 	font-size: 18px;
 	border: 0;
