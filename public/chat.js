@@ -55,11 +55,10 @@ socket.on('userConnected', (name) => {
 
 // An user disconnect
 socket.on('userDisconnected', (name) => {
-	output.innerHTML += '<p><strong>' + name + '</strong>disconnected.</p>';
+	output.innerHTML += `<p><strong>${name}</strong> disconnected.</p>`;
 });
 
 // An user send a message
 socket.on('chat', (data) => {
-	output.innerHTML +=
-		'<p><strong>' + data.name + '</br></strong>' + data.message + '</p>';
+	output.innerHTML += `<p><strong>${data.name}</br></strong>${data.message}</p>`;
 });
