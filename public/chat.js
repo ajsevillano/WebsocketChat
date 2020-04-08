@@ -1,11 +1,4 @@
 let name = prompt('Please enter your name', GenerateRandomName());
-window.onload = askForName();
-
-function askForName() {
-	if (name != null) {
-		document.getElementById('handle').innerHTML = name;
-	}
-}
 
 function GenerateRandomName() {
 	let GenerateRandomNumber = Math.floor(Math.random() * 1000) + 1;
@@ -13,13 +6,26 @@ function GenerateRandomName() {
 	return 'Guest' + RandomName;
 }
 
-// Make the connection with the chat.
-let socket = io.connect('http://192.168.1.223:4000');
-
 // Querys to the DOM
 let message = document.getElementById('message');
 let btn = document.getElementById('send');
 let output = document.getElementById('output');
+let chatWindow = document.getElementById('chat-window');
+
+// Querys to the Top bar DOM
+
+let loginName = document.getElementById('loginName');
+let loginH1 = document.createElement('h1');
+
+loginName.appendChild(loginH1);
+
+loginH1.innerHTML = 'Welcome ' + name;
+output.innerHTML = '<p><strong>You </strong>have joined the chat.</p>';
+
+// Make the connection with the chat.
+let socket = io.connect('http://192.168.1.223:4000');
+
+socket.emit('Newconnection', name);
 
 // Send the message when Return key is press and message is not empty.
 document.addEventListener('keydown', (event) => {
@@ -35,12 +41,24 @@ document.addEventListener('keydown', (event) => {
 btn.addEventListener('click', () => {
 	socket.emit('chat', {
 		message: message.value,
-		name: handle.innerHTML,
+		name: name,
 	});
 	message.value = '';
 });
 
-// Listen for events
+// Events listeners //
+
+// An user connect
+socket.on('userConnected', (name) => {
+	output.innerHTML += `<p><strong>${name}</strong> have joined the chat.</p>`;
+});
+
+// An user disconnect
+socket.on('userDisconnected', (name) => {
+	output.innerHTML += '<p><strong>' + name + '</strong>disconnected.</p>';
+});
+
+// An user send a message
 socket.on('chat', (data) => {
 	output.innerHTML +=
 		'<p><strong>' + data.name + '</br></strong>' + data.message + '</p>';

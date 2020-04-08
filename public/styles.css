@@ -2,6 +2,7 @@
 
 body {
 	font-family: 'Nunito', sans-serif;
+	margin: 0 0 auto 0;
 }
 
 h2,
@@ -17,6 +18,26 @@ h1 {
 	border: 1px solid #ddd;
 	box-shadow: 1px 3px 5px rgba(0, 0, 0, 0.05);
 	border-radius: 2px;
+}
+
+@media only screen and (max-width: 600px) {
+	#mario-chat {
+		max-width: 90%;
+	}
+}
+
+#loginName {
+	border: 1px solid #ddd;
+	border-radius: 2px;
+	background-color: #1d3557;
+	padding: 0.1em;
+}
+
+#loginName h1 {
+	color: white;
+	text-align: center;
+	padding: 0;
+	font-weight: normal;
 }
 
 #chat-window {
@@ -39,7 +60,7 @@ h1 {
 }
 
 #output strong {
-	color: #575ed8;
+	color: #457b9d;
 }
 
 label {
