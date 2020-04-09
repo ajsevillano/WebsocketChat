@@ -1,4 +1,7 @@
-let name = prompt('Please enter your name', GenerateRandomName());
+let nameFromPrompt = prompt('Please enter your name', GenerateRandomName());
+
+// Strip HTML Tags.
+let name = nameFromPrompt.replace(/(<([^>]+)>)/gi, '');
 
 function GenerateRandomName() {
 	let GenerateRandomNumber = Math.floor(Math.random() * 1000) + 1;
@@ -37,7 +40,7 @@ document.addEventListener('keydown', (event) => {
 	}
 });
 
-// Emit the events
+// Emit the event when someone send a message
 btn.addEventListener('click', () => {
 	socket.emit('chat', {
 		message: message.value,
@@ -55,10 +58,12 @@ socket.on('userConnected', (name) => {
 
 // An user disconnect
 socket.on('userDisconnected', (name) => {
-	output.innerHTML += `<p><strong>${name}</strong> disconnected.</p>`;
+	if (name != null) {
+		output.innerHTML += `<p><strong>${name}</strong> disconnected.</p>`;
+	}
 });
 
 // An user send a message
 socket.on('chat', (data) => {
-	output.innerHTML += `<p><strong>${data.name}</br></strong>${data.message}</p>`;
+	output.innerHTML += `<p><strong>${data.name}</strong> ${data.message}</p>`;
 });

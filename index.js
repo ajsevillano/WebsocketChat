@@ -1,5 +1,6 @@
 var express = require('express');
 var socket = require('socket.io');
+var ent = require('ent'); // Blocks HTML characters (security equivalent to htmlentities in PHP)
 var port = 4000;
 
 //Setting up de App
@@ -21,6 +22,9 @@ io.on('connection', (socket) => {
 	console.log('Client ' + socket.id + ' connected');
 
 	socket.on('chat', (data) => {
+		data.message = ent.encode(data.message);
+		console.log(data.message);
+
 		io.sockets.emit('chat', data);
 	});
 
@@ -30,6 +34,7 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
+		console.log('Client ' + socket.id + ' disconnected');
 		socket.broadcast.emit('userDisconnected', users[socket.id]);
 		delete users[socket.id];
 	});
