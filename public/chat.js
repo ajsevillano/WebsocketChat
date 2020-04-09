@@ -3,7 +3,7 @@ let nameFromPrompt = prompt('Please enter your name', GenerateRandomName());
 // Strip HTML Tags.
 let name = nameFromPrompt.replace(/(<([^>]+)>)/gi, '');
 
-// If the user doesn't put a name, it will generate a random one.
+// If the user doesn't choose a name, it will generate a random one.
 if (name === '') name = GenerateRandomName();
 
 function GenerateRandomName() {
@@ -66,7 +66,7 @@ btn.addEventListener('click', () => {
 
 // An user connect
 socket.on('userConnected', (name) => {
-	output.innerHTML += `<p><strong>${name}</strong> have joined the chat.</p>`;
+	output.innerHTML += `<p><strong style="color:${name['color']};">${name['name']}</strong> has joined the chat.</p>`;
 });
 
 // An user disconnect
