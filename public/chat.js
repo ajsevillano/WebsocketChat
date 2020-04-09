@@ -42,10 +42,17 @@ document.addEventListener('keydown', (event) => {
 
 // Emit the event when someone send a message
 btn.addEventListener('click', () => {
-	socket.emit('chat', {
-		message: message.value,
-		name: name,
-	});
+	if (message.value.length > 0) {
+		socket.emit('chat', {
+			message: message.value,
+			name: name,
+		});
+		message.removeAttribute('class');
+		message.placeholder = 'Type a message';
+	} else {
+		message.classList.add('error');
+		message.placeholder = 'You can not send an empty message.';
+	}
 	message.value = '';
 });
 
