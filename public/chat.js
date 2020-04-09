@@ -3,6 +3,9 @@ let nameFromPrompt = prompt('Please enter your name', GenerateRandomName());
 // Strip HTML Tags.
 let name = nameFromPrompt.replace(/(<([^>]+)>)/gi, '');
 
+// If the user doesn't put a name, it will generate a random one.
+if (name === '') name = GenerateRandomName();
+
 function GenerateRandomName() {
 	let GenerateRandomNumber = Math.floor(Math.random() * 1000) + 1;
 	let RandomName = GenerateRandomNumber.toString().padStart(4, '0');
@@ -14,6 +17,7 @@ let message = document.getElementById('message');
 let btn = document.getElementById('send');
 let output = document.getElementById('output');
 let chatWindow = document.getElementById('chat-window');
+let nickHolder = document.getElementById('left');
 
 // Querys to the Top bar DOM
 
@@ -24,6 +28,8 @@ loginName.appendChild(loginH1);
 
 loginH1.innerHTML = 'Welcome ' + name;
 output.innerHTML = '<p><strong>You </strong>have joined the chat.</p>';
+
+nickHolder.innerHTML = name;
 
 // Make the connection with the chat.
 let socket = io.connect('http://192.168.1.223:4000');

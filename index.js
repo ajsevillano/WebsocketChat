@@ -6,7 +6,7 @@ var port = 4000;
 //Setting up de App
 var app = express();
 var server = app.listen(port, () => {
-	console.log('Escuchando en el puerto 4000');
+	console.log('Listen up at port 4000');
 });
 
 // Public folder for Static files
@@ -23,8 +23,6 @@ io.on('connection', (socket) => {
 
 	socket.on('chat', (data) => {
 		data.message = ent.encode(data.message);
-		console.log(data.message);
-
 		io.sockets.emit('chat', data);
 	});
 

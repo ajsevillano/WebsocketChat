@@ -95,3 +95,22 @@ button {
 .error::placeholder {
 	color: firebrick;
 }
+
+#wrapper {
+	display: flex;
+}
+
+#left {
+	flex: 0 0 0;
+	background: #f5f5f5;
+	color: #555;
+	font-size: 16px;
+	border: 0;
+	padding: 12px 12px;
+	width: 100%;
+	text-align: center;
+}
+
+#right {
+	flex: 1;
+}
