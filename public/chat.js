@@ -31,6 +31,10 @@ output.innerHTML = '<p><strong>You </strong>have joined the chat.</p>';
 
 nickHolder.innerHTML = name;
 
+function ScrollBar() {
+	return (chatWindow.scrollTop = chatWindow.scrollHeight);
+}
+
 // Make the connection with the chat.
 let socket = io.connect('http://192.168.1.223:4000');
 
@@ -67,16 +71,17 @@ btn.addEventListener('click', () => {
 // An user connect
 socket.on('userConnected', (name) => {
 	output.innerHTML += `<p><strong style="color:${name['color']};">${name['name']}</strong> has joined the chat.</p>`;
+	ScrollBar();
 });
 
 // An user disconnect
 socket.on('userDisconnected', (name) => {
-	if (name != null) {
-		output.innerHTML += `<p><strong>${name}</strong> disconnected.</p>`;
-	}
+	output.innerHTML += `<p><strong>${name}</strong> disconnected.</p>`;
+	ScrollBar();
 });
 
 // An user send a message
 socket.on('chat', (data) => {
 	output.innerHTML += `<p><strong>${data.name}</strong> ${data.message}</p>`;
+	ScrollBar();
 });
