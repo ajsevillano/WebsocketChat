@@ -41,30 +41,28 @@ app.use(express.static('public'));
 //Socket setup
 var io = socket(server);
 
-const users = {};
+const userData = {};
 
 io.on('connection', (socket) => {
 	console.log('Client ' + socket.id + ' connected');
+
+	socket.on('Newconnection', (name) => {
+		var time = getTimeWithLeadingZeros();
+		userData['name'] = name;
+		userData['time'] = time;
+		socket.broadcast.emit('userConnected', userData);
+		console.log(userData);
+	});
 
 	socket.on('chat', (data) => {
 		data.message = ent.encode(data.message);
 		io.sockets.emit('chat', data);
 	});
 
-	socket.on('Newconnection', (name) => {
-		var randomColor = Colors[Math.floor(Math.random() * Colors.length)];
-		var time = getTimeWithLeadingZeros();
-		users['name'] = name;
-		users['color'] = randomColor;
-		users['time'] = time;
-
-		socket.broadcast.emit('userConnected', users);
-	});
-
 	socket.on('disconnect', () => {
-		if (users['name'] != null) {
-			socket.broadcast.emit('userDisconnected', users);
-			delete users['socket.id'];
+		if (userData['name'] != null) {
+			socket.broadcast.emit('userDisconnected', userData);
+			delete userData['socket.id'];
 		}
 	});
 });

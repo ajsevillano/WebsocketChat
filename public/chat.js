@@ -70,7 +70,7 @@ btn.addEventListener('click', () => {
 
 // An user connect
 socket.on('userConnected', (data) => {
-	output.innerHTML += `<p><strong style="color:${data['color']};">${data['name']}</strong> has joined the chat <span class="timeSpan">[${data['time']}]</span></p>`;
+	output.innerHTML += `<p><strong>${data['name']}</strong> has joined the chat <span class="timeSpan">[${data['time']}]</span></p>`;
 	ScrollBar();
 });
 
