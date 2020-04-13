@@ -69,19 +69,19 @@ btn.addEventListener('click', () => {
 // Events listeners //
 
 // An user connect
-socket.on('userConnected', (name) => {
-	output.innerHTML += `<p><strong style="color:${name['color']};">${name['name']}</strong> has joined the chat.</p>`;
+socket.on('userConnected', (data) => {
+	output.innerHTML += `<p><strong style="color:${data['color']};">${data['name']}</strong> has joined the chat <span class="timeSpan">[${data['time']}]</span></p>`;
 	ScrollBar();
 });
 
 // An user disconnect
-socket.on('userDisconnected', (name) => {
-	output.innerHTML += `<p><strong>${name}</strong> disconnected.</p>`;
+socket.on('userDisconnected', (data) => {
+	output.innerHTML += `<p><strong>${data['name']}</strong> disconnected <span class="timeSpan">[${data['time']}]</span></p>`;
 	ScrollBar();
 });
 
 // An user send a message
 socket.on('chat', (data) => {
-	output.innerHTML += `<p><strong>${data.name}</strong> ${data.message}</p>`;
+	output.innerHTML += `<p><strong>${data.name}</strong></br> ${data.message}</p>`;
 	ScrollBar();
 });

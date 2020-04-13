@@ -114,3 +114,8 @@ button {
 #right {
 	flex: 1;
 }
+
+.timeSpan {
+	font-size: 13px;
+	color: #a5a5a5;
+}

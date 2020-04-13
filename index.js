@@ -21,6 +21,19 @@ Colors = [
 	'#474787',
 ];
 
+function getTimeWithLeadingZeros() {
+	var today = new Date();
+	var minutesTwoDigitsWithLeadingZero = ('0' + today.getMinutes()).substr(-2);
+	var secondsTwoDigitsWithLeadingZero = ('0' + today.getSeconds()).substr(-2);
+	var time =
+		today.getHours() +
+		':' +
+		minutesTwoDigitsWithLeadingZero +
+		':' +
+		secondsTwoDigitsWithLeadingZero;
+	return time;
+}
+
 // Public folder for Static files
 
 app.use(express.static('public'));
@@ -38,16 +51,19 @@ io.on('connection', (socket) => {
 		io.sockets.emit('chat', data);
 	});
 
-	socket.on('Newconnection', (name, randomColor) => {
+	socket.on('Newconnection', (name) => {
 		var randomColor = Colors[Math.floor(Math.random() * Colors.length)];
+		var time = getTimeWithLeadingZeros();
 		users['name'] = name;
 		users['color'] = randomColor;
+		users['time'] = time;
+
 		socket.broadcast.emit('userConnected', users);
 	});
 
 	socket.on('disconnect', () => {
 		if (users['name'] != null) {
-			socket.broadcast.emit('userDisconnected', users['name']);
+			socket.broadcast.emit('userDisconnected', users);
 			delete users['socket.id'];
 		}
 	});
