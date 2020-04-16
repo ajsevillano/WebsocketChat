@@ -23,8 +23,10 @@ let nickHolder = document.getElementById('left');
 
 let loginName = document.getElementById('loginName');
 let loginH1 = document.createElement('h1');
+let loginH2 = document.createElement('h2');
 
 loginName.appendChild(loginH1);
+loginName.appendChild(loginH2);
 
 loginH1.innerHTML = 'Welcome ' + name;
 output.innerHTML = '<p><strong>You </strong>have joined the chat.</p>';
@@ -77,6 +79,7 @@ socket.on('userConnected', (data) => {
 // An user disconnect
 socket.on('userDisconnected', (data) => {
 	output.innerHTML += `<p><strong>${data['name']}</strong> disconnected <span class="timeSpan">[${data['time']}]</span></p>`;
+	loginH2.innerHTML = 'Users: ' + data['numberOfClients'];
 	ScrollBar();
 });
 
@@ -84,4 +87,8 @@ socket.on('userDisconnected', (data) => {
 socket.on('chat', (data) => {
 	output.innerHTML += `<p><strong>${data.name}</strong></br> ${data.message}</p>`;
 	ScrollBar();
+});
+
+socket.on('ClientsCounter', (data) => {
+	loginH2.innerHTML = 'Users: ' + data;
 });
