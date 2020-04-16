@@ -13,24 +13,27 @@ function GenerateRandomName() {
 }
 
 // Querys to the DOM
-let message = document.getElementById('message');
-let btn = document.getElementById('send');
-let output = document.getElementById('output');
-let chatWindow = document.getElementById('chat-window');
-let nickHolder = document.getElementById('left');
-let feedback = document.getElementById('typing');
+let message, btn, output, nickHolder, feedback;
+
+message = document.getElementById('message');
+btn = document.getElementById('send');
+output = document.getElementById('output');
+nickHolder = document.getElementById('left');
+feedback = document.getElementById('typing');
 
 // Querys to the Top bar DOM
+let loginName, loginH1, loginH2;
 
-let loginName = document.getElementById('loginName');
-let loginH1 = document.createElement('h1');
-let loginH2 = document.createElement('h2');
+loginName = document.getElementById('loginName');
+loginH1 = document.createElement('h1');
+loginH2 = document.createElement('h2');
 
 loginName.appendChild(loginH1);
 loginName.appendChild(loginH2);
 
 loginH1.innerHTML = 'Welcome ' + name;
-output.innerHTML = '<p><strong>You </strong>have joined the chat.</p>';
+output.innerHTML =
+	'<p>Welcome to ajsevillano.irc.server.com! Please,have fun.</p><p><strong>You </strong>have joined the chat.</p>';
 
 nickHolder.innerHTML = name;
 

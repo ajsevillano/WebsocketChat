@@ -19,15 +19,12 @@ var io = socket(server);
 const userData = {};
 
 io.on('connection', (socket) => {
-	console.log(`User ${socket.id} connected`);
 	let numberOfClients = io.engine.clientsCount;
 	io.sockets.emit('ClientsCounter', numberOfClients);
-	console.log(numberOfClients);
 
 	socket.on('Newconnection', (name) => {
 		userData[socket.id] = name;
 		socket.broadcast.emit('userConnected', name);
-		console.log(name);
 	});
 
 	socket.on('disconnect', () => {
