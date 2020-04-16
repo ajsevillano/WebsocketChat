@@ -53,9 +53,12 @@ io.on('connection', (socket) => {
 	});
 
 	socket.on('disconnect', () => {
+		let DisconnectTime = getTimeWithLeadingZeros();
+		console.log(userData);
 		if (userData['name'] != null) {
+			userData['time'] = DisconnectTime;
 			socket.broadcast.emit('userDisconnected', userData);
-			delete userData['socket.id'];
+			delete userData['name'];
 		}
 	});
 });

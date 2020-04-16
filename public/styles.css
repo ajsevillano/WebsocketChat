@@ -12,7 +12,7 @@ h1 {
 	color: #575ed8;
 }
 
-#mario-chat {
+#ws-chat {
 	max-width: 600px;
 	margin: 30px auto;
 	border: 1px solid #ddd;
@@ -21,7 +21,7 @@ h1 {
 }
 
 @media only screen and (max-width: 600px) {
-	#mario-chat {
+	#ws-chat {
 		max-width: 90%;
 	}
 }
