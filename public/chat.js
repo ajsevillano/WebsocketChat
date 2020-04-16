@@ -18,6 +18,7 @@ let btn = document.getElementById('send');
 let output = document.getElementById('output');
 let chatWindow = document.getElementById('chat-window');
 let nickHolder = document.getElementById('left');
+let feedback = document.getElementById('typing');
 
 // Querys to the Top bar DOM
 
@@ -37,6 +38,24 @@ function ScrollBar() {
 	return (chatWindow.scrollTop = chatWindow.scrollHeight);
 }
 
+function getTimeWithLeadingZeros() {
+	let today,
+		minutesTwoDigitsWithLeadingZero,
+		secondsTwoDigitsWithLeadingZero,
+		time;
+
+	today = new Date();
+	minutesTwoDigitsWithLeadingZero = ('0' + today.getMinutes()).substr(-2);
+	secondsTwoDigitsWithLeadingZero = ('0' + today.getSeconds()).substr(-2);
+	time =
+		today.getHours() +
+		':' +
+		minutesTwoDigitsWithLeadingZero +
+		':' +
+		secondsTwoDigitsWithLeadingZero;
+	return time;
+}
+
 // Make the connection with the chat.
 let socket = io.connect('http://192.168.1.223:4000');
 
@@ -50,6 +69,11 @@ document.addEventListener('keydown', (event) => {
 	} else if (event.which === 13 && message.value != '') {
 		btn.click();
 	}
+});
+
+// Broadcast a message when the user is typing
+document.addEventListener('keydown', (event) => {
+	if (event.which != 13) socket.emit('typing', name);
 });
 
 // Emit the event when someone send a message
@@ -72,23 +96,31 @@ btn.addEventListener('click', () => {
 
 // An user connect
 socket.on('userConnected', (data) => {
-	output.innerHTML += `<p><strong>${data['name']}</strong> has joined the chat <span class="timeSpan">[${data['time']}]</span></p>`;
+	output.innerHTML += `<p><strong>${data}</strong> has joined the chat <span>${getTimeWithLeadingZeros()}</span></p>`;
 	ScrollBar();
 });
 
 // An user disconnect
 socket.on('userDisconnected', (data) => {
-	output.innerHTML += `<p><strong>${data['name']}</strong> disconnected <span class="timeSpan">[${data['time']}]</span></p>`;
-	loginH2.innerHTML = 'Users: ' + data['numberOfClients'];
+	output.innerHTML += `<p><strong>${
+		data[0]
+	}</strong> disconnected <span>${getTimeWithLeadingZeros()}</span></p>`;
+	loginH2.innerHTML = 'Users: ' + data[1];
 	ScrollBar();
 });
 
 // An user send a message
 socket.on('chat', (data) => {
+	feedback.innerHTML = '';
 	output.innerHTML += `<p><strong>${data.name}</strong></br> ${data.message}</p>`;
 	ScrollBar();
 });
 
 socket.on('ClientsCounter', (data) => {
 	loginH2.innerHTML = 'Users: ' + data;
+});
+
+socket.on('typing', (data) => {
+	ScrollBar();
+	feedback.innerHTML = `<p><span>${data} is typing a message...</span></p>`;
 });

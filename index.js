@@ -10,24 +10,6 @@ server = app.listen(port, () => {
 	console.log(`Listen up at port ${port}`);
 });
 
-function getTimeWithLeadingZeros() {
-	let today,
-		minutesTwoDigitsWithLeadingZero,
-		secondsTwoDigitsWithLeadingZero,
-		time;
-
-	today = new Date();
-	minutesTwoDigitsWithLeadingZero = ('0' + today.getMinutes()).substr(-2);
-	secondsTwoDigitsWithLeadingZero = ('0' + today.getSeconds()).substr(-2);
-	time =
-		today.getHours() +
-		':' +
-		minutesTwoDigitsWithLeadingZero +
-		':' +
-		secondsTwoDigitsWithLeadingZero;
-	return time;
-}
-
 // Public folder for Static files
 app.use(express.static('public'));
 
@@ -40,12 +22,21 @@ io.on('connection', (socket) => {
 	console.log(`User ${socket.id} connected`);
 	let numberOfClients = io.engine.clientsCount;
 	io.sockets.emit('ClientsCounter', numberOfClients);
+	console.log(numberOfClients);
 
 	socket.on('Newconnection', (name) => {
-		let time = getTimeWithLeadingZeros();
-		userData['name'] = name;
-		userData['time'] = time;
-		socket.broadcast.emit('userConnected', userData);
+		userData[socket.id] = name;
+		socket.broadcast.emit('userConnected', name);
+		console.log(name);
+	});
+
+	socket.on('disconnect', () => {
+		if (userData[socket.id] != null) {
+			let updateClients = io.engine.clientsCount;
+			UserUpdate = [userData[socket.id], updateClients];
+			socket.broadcast.emit('userDisconnected', UserUpdate);
+			delete userData[socket.id];
+		}
 	});
 
 	socket.on('chat', (data) => {
@@ -53,15 +44,7 @@ io.on('connection', (socket) => {
 		io.sockets.emit('chat', data);
 	});
 
-	socket.on('disconnect', () => {
-		let DisconnectTime = getTimeWithLeadingZeros();
-		let updateClients = io.engine.clientsCount;
-		if (userData['name'] != null) {
-			userData['time'] = DisconnectTime;
-			userData['numberOfClients'] = updateClients;
-			socket.broadcast.emit('userDisconnected', userData);
-			console.log(`User ${userData['name']} disconnected.`);
-			delete userData['name'];
-		}
+	socket.on('typing', (data) => {
+		socket.broadcast.emit('typing', data);
 	});
 });
