@@ -19,7 +19,6 @@ message = document.getElementById('message');
 btn = document.getElementById('send');
 output = document.getElementById('output');
 chatWindow = document.getElementById('chat-window');
-nickHolder = document.getElementById('left');
 feedback = document.getElementById('typing');
 
 // Querys to the Top bar DOM
@@ -32,10 +31,7 @@ loginName.appendChild(loginH1);
 loginName.appendChild(loginH2);
 
 loginH1.innerHTML = 'Welcome ' + name;
-output.innerHTML =
-	'<p>Welcome to ajsevillano.es! Please,have fun.</p><p><strong>You </strong>have joined the chat.</p>';
-
-nickHolder.innerHTML = name;
+output.innerHTML = `<p><span class="welcome">Welcome to the chat. Please have fun &#127881;. Local time: [${getTimeWithLeadingZeros()}]</span></p><p><strong>You </strong>have joined the chat.</p>`;
 
 function ScrollBar() {
 	return (chatWindow.scrollTop = chatWindow.scrollHeight);
@@ -105,21 +101,17 @@ socket.on('userConnected', (data) => {
 
 // An user disconnect
 socket.on('userDisconnected', (data) => {
-	output.innerHTML += `<p><strong>${
-		data[0]
-	}</strong> disconnected <span>${getTimeWithLeadingZeros()}</span></p>`;
-	loginH2.innerHTML = 'Users: ' + data[1];
+	let [id, numberOfUsers] = data;
+	output.innerHTML += `<p><strong>${id}</strong> disconnected <span>${getTimeWithLeadingZeros()}</span></p>`;
+	loginH2.innerHTML = `Users: ${numberOfUsers}`;
 	ScrollBar();
 });
 
 // An user send a message
 socket.on('chat', (data) => {
+	let { name, message } = data;
 	feedback.innerHTML = '';
-	output.innerHTML += `<p><strong>${
-		data.name
-	}</strong> <span>[${getTimeWithLeadingZeros()}]</span></br> ${
-		data.message
-	}</p>`;
+	output.innerHTML += `<p><strong>${name}</strong> <span>[${getTimeWithLeadingZeros()}]</span></br> ${message}</p>`;
 	ScrollBar();
 });
 
