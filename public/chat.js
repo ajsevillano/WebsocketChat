@@ -13,11 +13,12 @@ function GenerateRandomName() {
 }
 
 // Querys to the DOM
-let message, btn, output, nickHolder, feedback;
+let message, btn, output, chatWindow, nickHolder, feedback;
 
 message = document.getElementById('message');
 btn = document.getElementById('send');
 output = document.getElementById('output');
+chatWindow = document.getElementById('chat-window');
 nickHolder = document.getElementById('left');
 feedback = document.getElementById('typing');
 
@@ -27,13 +28,12 @@ let loginName, loginH1, loginH2;
 loginName = document.getElementById('loginName');
 loginH1 = document.createElement('h1');
 loginH2 = document.createElement('h2');
-
 loginName.appendChild(loginH1);
 loginName.appendChild(loginH2);
 
 loginH1.innerHTML = 'Welcome ' + name;
 output.innerHTML =
-	'<p>Welcome to ajsevillano.irc.server.com! Please,have fun.</p><p><strong>You </strong>have joined the chat.</p>';
+	'<p>Welcome to ajsevillano.es! Please,have fun.</p><p><strong>You </strong>have joined the chat.</p>';
 
 nickHolder.innerHTML = name;
 
@@ -115,7 +115,11 @@ socket.on('userDisconnected', (data) => {
 // An user send a message
 socket.on('chat', (data) => {
 	feedback.innerHTML = '';
-	output.innerHTML += `<p><strong>${data.name}</strong></br> ${data.message}</p>`;
+	output.innerHTML += `<p><strong>${
+		data.name
+	}</strong> <span>[${getTimeWithLeadingZeros()}]</span></br> ${
+		data.message
+	}</p>`;
 	ScrollBar();
 });
 
